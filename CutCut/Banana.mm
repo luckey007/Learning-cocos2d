@@ -31,6 +31,8 @@
     
     if ((self = [super initWithFile:file body:body original:YES]))
     {
+        self.type = kTypeBanana;
+
     }
     return self;
 }

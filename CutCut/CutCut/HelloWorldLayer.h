@@ -26,6 +26,17 @@
 //to define the ratio so that your most common object type is 1x1 metre.
 #define PTM_RATIO 32
 
+#define frandom (float)arc4random()/UINT64_C(0x100000000)
+#define frandom_range(low,high) ((high-low)*frandom)+low
+#define random_range(low,high) (arc4random()%(high-low+1))+low
+#define midpoint(a,b) (float)(a+b)/2
+
+typedef enum _TossType
+{
+    kTossConsecutive = 0,
+    kTossSimultaneous
+}TossType;
+
 // HelloWorldLayer
 @interface HelloWorldLayer : CCLayer 
 {
@@ -42,6 +53,11 @@
     CCArray *_blades;
     CCBlade *_blade;
     float _deltaRemainder;
+    
+    double _nextTossTime;
+    double _tossInterval;
+    int _queuedForToss;
+    TossType _currentTossType;
 }
 
 @property(nonatomic,retain)CCArray *cache;

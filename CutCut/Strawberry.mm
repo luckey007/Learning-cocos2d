@@ -30,6 +30,8 @@
 
     if ((self = [super initWithFile:file body:body original:YES]))
     {
+        self.type = kTypeStrawberry;
+
     }
     return self;
 }

@@ -18,6 +18,8 @@
 @synthesize sliceEntered = _sliceEntered;
 @synthesize sliceExited = _sliceExited;
 @synthesize sliceEntryTime = _sliceEntryTime;
+@synthesize state = _state;
+@synthesize type = _type;
 
 +(id)spriteWithFile:(NSString *)filename body:(b2Body *)body  original:(BOOL)original
 {
@@ -60,11 +62,13 @@
         self.anchorPoint = ccp(_centroid.x * PTM_RATIO / texture.contentSize.width, 
                                _centroid.y * PTM_RATIO / texture.contentSize.height);
         
+        _state = kStateIdle;
         _sliceExited = NO;
         _sliceEntered = NO;
         _entryPoint.SetZero();
         _exitPoint.SetZero();
         _sliceExited = 0;
+        
     }
     return self;
 }
@@ -94,7 +98,7 @@
     fixtureDef.restitution = restitution;
     fixtureDef.filter.categoryBits = 0;
     fixtureDef.filter.maskBits = 0;
-    //fixtureDef.isSensor = YES;
+    fixtureDef.isSensor = YES;
     
     b2PolygonShape shape;
     shape.Set(vertices, count);

@@ -16,7 +16,11 @@
 #import "AppDelegate.h"
 
 #import "Strawberry.h"
-
+#import "Pineapple.h"
+#import "Grapes.h"
+#import "Banana.h"
+#import "Bomb.h"
+#import "Watermelon.h"
 
 
 enum {
@@ -77,6 +81,8 @@ int comparator(const void *a, const void *b) {
             [_blades addObject:blade];
         }
     
+        _nextTossTime = CACurrentMediaTime() + 1;
+        _queuedForToss = 0;
         [self scheduleUpdate];
         
         
@@ -98,7 +104,7 @@ int comparator(const void *a, const void *b) {
 	CGSize s = [[CCDirector sharedDirector] winSize];
 	
 	b2Vec2 gravity;
-	gravity.Set(0.0f, -10.0f);
+    gravity.Set(0.0f, -4.25f);
 	world = new b2World(gravity);
 	
 	
@@ -126,27 +132,27 @@ int comparator(const void *a, const void *b) {
 	// Call the body factory which allocates memory for the ground body
 	// from a pool and creates the ground box shape (also from a pool).
 	// The body is also added to the world.
-	b2Body* groundBody = world->CreateBody(&groundBodyDef);
-	
-	// Define the ground box shape.
-	b2EdgeShape groundBox;
-	
-	// bottom
-	
-	groundBox.Set(b2Vec2(0,0), b2Vec2(s.width/PTM_RATIO,0));
-	groundBody->CreateFixture(&groundBox,0);
-	
-	// top
-	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO));
-	groundBody->CreateFixture(&groundBox,0);
-	
-	// left
-	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(0,0));
-	groundBody->CreateFixture(&groundBox,0);
-	
-	// right
-	groundBox.Set(b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,0));
-	groundBody->CreateFixture(&groundBox,0);
+//	b2Body* groundBody = world->CreateBody(&groundBodyDef);
+//	
+//	// Define the ground box shape.
+//	b2EdgeShape groundBox;
+//	
+//	// bottom
+//	
+//	groundBox.Set(b2Vec2(0,0), b2Vec2(s.width/PTM_RATIO,0));
+//	groundBody->CreateFixture(&groundBox,0);
+//	
+//	// top
+//	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO));
+//	groundBody->CreateFixture(&groundBox,0);
+//	
+//	// left
+//	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(0,0));
+//	groundBody->CreateFixture(&groundBox,0);
+//	
+//	// right
+//	groundBox.Set(b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,0));
+//	groundBody->CreateFixture(&groundBox,0);
 }
 
 
@@ -154,14 +160,147 @@ int comparator(const void *a, const void *b) {
 {
     _cache = [[CCArray alloc] initWithCapacity:53];
     
-    // Just create one sprite for now. This whole method will be replaced later.
-    PolygonSprite *sprite = [[Strawberry alloc] initWithWorld:world];
-    [self addChild:sprite z:1];
-    [sprite activateCollisions];
-    //  [sprite deactivateCollisions];
-    [_cache addObject:sprite];
+    for (int i = 0; i < 10; i++)
+    {
+        PolygonSprite *sprite = [[Watermelon alloc] initWithWorld:world];
+        sprite.position = ccp(-64*(i+1),-64);
+        [self addChild:sprite z:1];
+        [_cache addObject:sprite];
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        PolygonSprite *sprite = [[Strawberry alloc] initWithWorld:world];
+        sprite.position = ccp(-64*(i+1),-64);
+        [self addChild:sprite z:1];
+        [_cache addObject:sprite];
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        PolygonSprite *sprite = [[Pineapple alloc] initWithWorld:world];
+        sprite.position = ccp(-64*(i+1),-64);
+        [self addChild:sprite z:1];
+        [_cache addObject:sprite];
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        PolygonSprite *sprite = [[Grapes alloc] initWithWorld:world];
+        sprite.position = ccp(-64*(i+1),-64);
+        [self addChild:sprite z:1];
+        [_cache addObject:sprite];
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        PolygonSprite *sprite = [[Banana alloc] initWithWorld:world];
+        sprite.position = ccp(-64*(i+1),-64);
+        [self addChild:sprite z:1];
+        [_cache addObject:sprite];
+    }
+    
+    for (int i = 0; i < 3; i++)
+    {
+        PolygonSprite *sprite = [[Bomb alloc] initWithWorld:world];
+        sprite.position = ccp(-64*(i+1),-64);
+        [self addChild:sprite z:1];
+        [_cache addObject:sprite];
+    }
 }
 
+
+-(void)tossSprite:(PolygonSprite*)sprite
+{
+    CGSize screen = [[CCDirector sharedDirector] winSize];
+    CGPoint randomPosition = ccp(frandom_range(100, screen.width-164), -64);
+    float randomAngularVelocity = frandom_range(-1, 1);
+    
+    float xModifier = 50*(randomPosition.x - 100)/(screen.width - 264);
+    float min = -25.0 - xModifier;
+    float max = 75.0 - xModifier;
+    
+    float randomXVelocity = frandom_range(min,max);
+    float randomYVelocity = frandom_range(250, 300);
+    
+    sprite.state = kStateTossed;
+    sprite.position = randomPosition;
+    [sprite activateCollisions];
+    sprite.body->SetLinearVelocity(b2Vec2(randomXVelocity/PTM_RATIO,randomYVelocity/PTM_RATIO));
+    sprite.body->SetAngularVelocity(randomAngularVelocity);
+}
+
+-(void)spriteLoop
+{
+    double curTime = CACurrentMediaTime();
+    
+    //step 1
+    if (curTime > _nextTossTime)
+    {
+        PolygonSprite *sprite;
+        
+        int random = random_range(0, 4);
+        //step 2
+        Type type = (Type)random;
+        if (_currentTossType == kTossConsecutive && _queuedForToss > 0)
+        {
+            CCARRAY_FOREACH(_cache, sprite)
+            {
+                if (sprite.state == kStateIdle && sprite.type == type)
+                {
+                    [self tossSprite:sprite];
+                    _queuedForToss--;
+                    break;
+                }
+            }
+        }
+        else
+        { //step 3
+            _queuedForToss = random_range(3, 8);
+            int tossType = random_range(0,1);
+            
+            _currentTossType = (TossType)tossType;
+            //step 4
+            if (_currentTossType == kTossSimultaneous)
+            {
+                CCARRAY_FOREACH(_cache, sprite)
+                {
+                    if (sprite.state == kStateIdle && sprite.type == type)
+                    {
+                        [self tossSprite:sprite];
+                        _queuedForToss--;
+                        random = random_range(0, 4);
+                        type = (Type)random;
+                        
+                        if (_queuedForToss == 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+            } //step 5
+            else if (_currentTossType == kTossConsecutive)
+            {
+                CCARRAY_FOREACH(_cache, sprite)
+                {
+                    if (sprite.state == kStateIdle && sprite.type == type)
+                    {
+                        [self tossSprite:sprite];
+                        _queuedForToss--;
+                        break;
+                    }
+                }
+            }
+        }
+        //step 6
+        if (_queuedForToss == 0)
+        {
+            _tossInterval = frandom_range(2,3);
+            _nextTossTime = curTime + _tossInterval;
+        }
+        else
+        {
+            _tossInterval = frandom_range(0.3,0.8);
+            _nextTossTime = curTime + _tossInterval;
+        }
+    }
+}
 
 +(CCScene *) scene
 {
@@ -214,6 +353,8 @@ int comparator(const void *a, const void *b) {
 	// generally best to keep the time step and iterations fixed.
 	world->Step(dt, velocityIterations, positionIterations);
     [self checkAndSliceObjects];
+    [self cleanSprites];
+    [self spriteLoop];
     
     if ([_blade.path count] > 3) {
         _deltaRemainder+=dt*60*1.2;
@@ -299,6 +440,14 @@ int comparator(const void *a, const void *b) {
     //you destroy the old shape and create the new shapes and sprites
     if (sprite1VerticesAcceptable && sprite2VerticesAcceptable)
     {
+        b2Vec2 worldEntry = sprite.body->GetWorldPoint(sprite.entryPoint);
+        b2Vec2 worldExit = sprite.body->GetWorldPoint(sprite.exitPoint);
+        float angle = ccpToAngle(ccpSub(ccp(worldExit.x,worldExit.y), ccp(worldEntry.x,worldEntry.y)));
+        CGPoint vector1 = ccpForAngle(angle + 1.570796);
+        CGPoint vector2 = ccpForAngle(angle - 1.570796);
+        float midX = midpoint(worldEntry.x, worldExit.x);
+        float midY = midpoint(worldEntry.y, worldExit.y);
+        
         //create the first sprite's body
         b2Body *body1 = [self createBodyWithPosition:sprite.body->GetPosition() rotation:sprite.body->GetAngle() vertices:sprite1VerticesSorted vertexCount:sprite1VertexCount density:originalFixture->GetDensity() friction:originalFixture->GetFriction() restitution:originalFixture->GetRestitution()];
         
@@ -306,6 +455,7 @@ int comparator(const void *a, const void *b) {
         
         newSprite1 = [PolygonSprite spriteWithTexture:sprite.texture body:body1 original:NO];
         [self addChild:newSprite1 z:1];
+        newSprite1.body->ApplyLinearImpulse(b2Vec2(2*body1->GetMass()*vector1.x,2*body1->GetMass()*vector1.y), b2Vec2(midX,midY));
         
         //create the second sprite's body
         b2Body *body2 = [self createBodyWithPosition:sprite.body->GetPosition() rotation:sprite.body->GetAngle() vertices:sprite2VerticesSorted vertexCount:sprite2VertexCount density:originalFixture->GetDensity() friction:originalFixture->GetFriction() restitution:originalFixture->GetRestitution()];
@@ -313,10 +463,12 @@ int comparator(const void *a, const void *b) {
         //create the second sprite
         newSprite2 = [PolygonSprite spriteWithTexture:sprite.texture body:body2 original:NO];
         [self addChild:newSprite2 z:1];
+        newSprite2.body->ApplyLinearImpulse(b2Vec2(2*body2->GetMass()*vector2.x,2*body2->GetMass()*vector2.y), b2Vec2(midX,midY));
         
         //you don't need the old shape & sprite anymore so you either destroy it or squirrel it away
         if (sprite.original)
         {
+            sprite.state = kStateIdle;
             [sprite deactivateCollisions];
             sprite.position = ccp(-256,-256);   //cast them faraway
             sprite.sliceEntered = NO;
@@ -511,6 +663,54 @@ int comparator(const void *a, const void *b) {
         }
     }
 }
+
+-(void)cleanSprites
+{
+    PolygonSprite *sprite;
+    
+    //we check for all tossed sprites that have dropped offscreen and reset them
+    CCARRAY_FOREACH(_cache, sprite)
+    {
+        if (sprite.state == kStateTossed)
+        {
+            CGPoint spritePosition = ccp(sprite.body->GetPosition().x*PTM_RATIO,sprite.body->GetPosition().y*PTM_RATIO);
+            float yVelocity = sprite.body->GetLinearVelocity().y;
+            
+            //this means the sprite has dropped offscreen
+            if (spritePosition.y < -64 && yVelocity < 0)
+            {
+                sprite.state = kStateIdle;
+                sprite.sliceEntered = NO;
+                sprite.sliceExited = NO;
+                sprite.entryPoint.SetZero();
+                sprite.exitPoint.SetZero();
+                sprite.position = ccp(-64,-64);
+                sprite.body->SetLinearVelocity(b2Vec2(0.0,0.0));
+                sprite.body->SetAngularVelocity(0.0);
+                [sprite deactivateCollisions];
+            }
+        }
+    }
+    
+    //we check for all sliced pieces that have dropped offscreen and remove them
+    CGSize screen = [[CCDirector sharedDirector] winSize];
+    for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+    {
+        if (b->GetUserData() != NULL) {
+            PolygonSprite *sprite = (PolygonSprite*)b->GetUserData();
+            CGPoint position = ccp(b->GetPosition().x*PTM_RATIO,b->GetPosition().y*PTM_RATIO);
+            if (position.x < -64 || position.x > screen.width || position.y < -64)
+            {
+                if (!sprite.original)
+                {
+                    world->DestroyBody(sprite.body);
+                    [self removeChild:sprite cleanup:YES];
+                }
+            }
+        }
+    }
+}
+
 
 #pragma mark Touch Events
 

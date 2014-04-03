@@ -31,6 +31,7 @@
     
     if ((self = [super initWithFile:file body:body original:YES]))
     {
+        self.type = kTypeGrapes;
 
     }
     return self;
