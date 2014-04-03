@@ -13,7 +13,11 @@
 @synthesize body = _body;
 @synthesize original = _original;
 @synthesize centroid = _centroid;
-
+@synthesize entryPoint = _entryPoint;
+@synthesize exitPoint = _exitPoint;
+@synthesize sliceEntered = _sliceEntered;
+@synthesize sliceExited = _sliceExited;
+@synthesize sliceEntryTime = _sliceEntryTime;
 
 +(id)spriteWithFile:(NSString *)filename body:(b2Body *)body  original:(BOOL)original
 {
@@ -55,6 +59,12 @@
         // assign an anchor point based on the center
         self.anchorPoint = ccp(_centroid.x * PTM_RATIO / texture.contentSize.width, 
                                _centroid.y * PTM_RATIO / texture.contentSize.height);
+        
+        _sliceExited = NO;
+        _sliceEntered = NO;
+        _entryPoint.SetZero();
+        _exitPoint.SetZero();
+        _sliceExited = 0;
     }
     return self;
 }
@@ -129,7 +139,8 @@
     float c = cosf(radians);
     float s = sinf(radians);
     
-    if( ! CGPointEqualToPoint(_anchorPointInPoints, CGPointZero) ){
+    if(!CGPointEqualToPoint(_anchorPointInPoints, CGPointZero)){
+        
         x += c*-_anchorPointInPoints.x + -s*-_anchorPointInPoints.y;
         y += s*-_anchorPointInPoints.x + c*-_anchorPointInPoints.y;
     }

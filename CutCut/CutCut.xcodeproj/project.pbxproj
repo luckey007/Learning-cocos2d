@@ -226,6 +226,7 @@
 		05E40FA718EC2CBC00705E59 /* Bomb.mm in Sources */ = {isa = PBXBuildFile; fileRef = 05E40FA018EC2CBC00705E59 /* Bomb.mm */; };
 		05E40FA818EC2CBC00705E59 /* Banana.mm in Sources */ = {isa = PBXBuildFile; fileRef = 05E40FA218EC2CBC00705E59 /* Banana.mm */; };
 		05E40FAD18EC2DFA00705E59 /* Watermelon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 05E40FAC18EC2DFA00705E59 /* Watermelon.mm */; };
+		05ED650618ED686C00D7ADA2 /* CCBlade.mm in Sources */ = {isa = PBXBuildFile; fileRef = 05ED650418ED686C00D7ADA2 /* CCBlade.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -656,6 +657,9 @@
 		05E40FA918EC2CEA00705E59 /* Banana.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Banana.h; path = ../Banana.h; sourceTree = "<group>"; };
 		05E40FAB18EC2DFA00705E59 /* Watermelon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Watermelon.h; sourceTree = "<group>"; };
 		05E40FAC18EC2DFA00705E59 /* Watermelon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Watermelon.mm; sourceTree = "<group>"; };
+		05ED650318ED427400D7ADA2 /* RayCastCallback.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RayCastCallback.h; sourceTree = "<group>"; };
+		05ED650418ED686C00D7ADA2 /* CCBlade.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CCBlade.mm; path = ../CCBlade.mm; sourceTree = "<group>"; };
+		05ED650518ED686C00D7ADA2 /* CCBlade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCBlade.h; path = ../CCBlade.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -719,6 +723,9 @@
 				05E40FAA18EC2CF600705E59 /* Fruits */,
 				05E40F5F18EC2B5400705E59 /* Images */,
 				05E40F5118EC25BC00705E59 /* PRKit */,
+				05ED650418ED686C00D7ADA2 /* CCBlade.mm */,
+				05ED650518ED686C00D7ADA2 /* CCBlade.h */,
+				05ED650318ED427400D7ADA2 /* RayCastCallback.h */,
 				05E40F3B18EC23E300705E59 /* AppDelegate.h */,
 				05E40F3C18EC23E300705E59 /* AppDelegate.mm */,
 				05E40F3E18EC23E300705E59 /* HelloWorldLayer.h */,
@@ -1328,7 +1335,6 @@
 		05E40FAA18EC2CF600705E59 /* Fruits */ = {
 			isa = PBXGroup;
 			children = (
-				05E40FA918EC2CEA00705E59 /* Banana.h */,
 				05E40F9818EC2CBC00705E59 /* Strawberry.mm */,
 				05E40F9918EC2CBC00705E59 /* Strawberry.h */,
 				05E40F9A18EC2CBC00705E59 /* Pineapple.mm */,
@@ -1337,6 +1343,7 @@
 				05E40F9D18EC2CBC00705E59 /* Grapes.h */,
 				05E40FA018EC2CBC00705E59 /* Bomb.mm */,
 				05E40FA118EC2CBC00705E59 /* Bomb.h */,
+				05E40FA918EC2CEA00705E59 /* Banana.h */,
 				05E40FA218EC2CBC00705E59 /* Banana.mm */,
 				05E40FAB18EC2DFA00705E59 /* Watermelon.h */,
 				05E40FAC18EC2DFA00705E59 /* Watermelon.mm */,
@@ -1594,6 +1601,7 @@
 				05E40ED818EC23E300705E59 /* b2Settings.cpp in Sources */,
 				05E40E1018EC23E200705E59 /* cocos2d.m in Sources */,
 				05E40DBD18EC23E100705E59 /* CCProgressTimer.m in Sources */,
+				05ED650618ED686C00D7ADA2 /* CCBlade.mm in Sources */,
 				05E40ECE18EC23E300705E59 /* b2BlockAllocator.cpp in Sources */,
 				05E40D9218EC23E100705E59 /* CCLabelTTF.m in Sources */,
 				05E40E3F18EC23E200705E59 /* CCFileUtils.m in Sources */,
@@ -1731,6 +1739,7 @@
 				05E40F4D18EC23E300705E59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
