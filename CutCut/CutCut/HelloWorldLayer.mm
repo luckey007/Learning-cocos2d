@@ -63,6 +63,7 @@ int comparator(const void *a, const void *b) {
         // init physics
         [self initPhysics];
         [self initSprites];
+        [self initHUD];
         [self initBackground];
 
         _raycastCallback = new RayCastCallback();
@@ -234,6 +235,18 @@ int comparator(const void *a, const void *b) {
     if (curTime > _nextTossTime)
     {
         PolygonSprite *sprite;
+        int chance = arc4random()%8;
+        if (chance == 0)
+        {
+            CCARRAY_FOREACH(_cache, sprite)
+            {
+                if (sprite.state == kStateIdle && sprite.type == kTypeBomb)
+                {
+                    [self tossSprite:sprite];
+                    break;
+                }
+            }
+        }
         
         int random = random_range(0, 4);
         //step 2
@@ -475,6 +488,15 @@ int comparator(const void *a, const void *b) {
             sprite.sliceExited = NO;
             sprite.entryPoint.SetZero();
             sprite.exitPoint.SetZero();
+            
+            if (sprite.type == kTypeBomb)
+            {
+                [self subtractLife];
+            }
+            else
+            {
+                //placeholder
+            }
         }
         else
         {
@@ -661,6 +683,59 @@ int comparator(const void *a, const void *b) {
             sprite.sliceEntered = NO;
             sprite.sliceExited = NO;
         }
+    }
+}
+
+-(void)initHUD
+{
+    CGSize screen = [[CCDirector sharedDirector] winSize];
+    
+    _cuts = 0;
+    _lives = 3;
+    
+    for (int i = 0; i < 3; i++)
+    {
+        CCSprite *cross = [CCSprite spriteWithFile:@"x_unfilled.png"];
+        cross.position = ccp(screen.width - cross.contentSize.width/2 - i*cross.contentSize.width, screen.height - cross.contentSize.height/2);
+        [self addChild:cross z:4];
+    }
+    
+    CCSprite *cutsIcon = [CCSprite spriteWithFile:@"fruit_cut.png"];
+    cutsIcon.position = ccp(cutsIcon.contentSize.width/2, screen.height - cutsIcon.contentSize.height/2);
+    [self addChild:cutsIcon];
+    
+    _cutsLabel = [CCLabelTTF labelWithString:@"0" fontName:@"Helvetica Neue" fontSize:30];
+    _cutsLabel.anchorPoint = ccp(0, 0.5);
+    _cutsLabel.position = ccp(cutsIcon.position.x + cutsIcon.contentSize.width/2 + _cutsLabel.contentSize.width/2,cutsIcon.position.y);
+    [self addChild:_cutsLabel z:4];
+}
+
+-(void)restart
+{
+    [[CCDirector sharedDirector] replaceScene:[HelloWorldLayer scene]];
+}
+
+-(void)endGame
+{
+    [self unscheduleUpdate];
+    CCMenuItemLabel *label = [CCMenuItemLabel itemWithLabel:[CCLabelTTF labelWithString:@"RESTART"fontName:@"Helvetica Neue"fontSize:50] target:self selector:@selector(restart)];
+    CCMenu *menu = [CCMenu menuWithItems:label, nil];
+    CGSize screen = [[CCDirector sharedDirector] winSize];
+    menu.position = ccp(screen.width/2, screen.height/2);
+    [self addChild:menu z:4];
+}
+
+-(void)subtractLife
+{
+    CGSize screen = [[CCDirector sharedDirector] winSize];
+    _lives--;
+    CCSprite *lostLife = [CCSprite spriteWithFile:@"x_filled.png"];
+    lostLife.position = ccp(screen.width - lostLife.contentSize.width/2 - _lives*lostLife.contentSize.width, screen.height - lostLife.contentSize.height/2);
+    [self addChild:lostLife z:4];
+    
+    if (_lives <= 0)
+    {
+        [self endGame];
     }
 }
 

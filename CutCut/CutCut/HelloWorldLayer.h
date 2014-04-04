@@ -58,6 +58,10 @@ typedef enum _TossType
     double _tossInterval;
     int _queuedForToss;
     TossType _currentTossType;
+    
+    int _cuts;
+    int _lives;
+    CCLabelTTF *_cutsLabel;
 }
 
 @property(nonatomic,retain)CCArray *cache;
