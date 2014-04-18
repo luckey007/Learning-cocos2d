@@ -40,7 +40,6 @@
         _meta.visible = NO;
 
         CCTMXObjectGroup *objectGroup = [_tileMap objectGroupNamed:@"Objects"];
-        NSAssert(objectGroup != nil, @"tile map has no objects object layer");
         
         NSDictionary *spawnPoint = [objectGroup objectNamed:@"SpawnPoint"];
         int x = [spawnPoint[@"x"] integerValue];
