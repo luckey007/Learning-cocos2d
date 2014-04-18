@@ -18,6 +18,9 @@
         actors = [CCSpriteBatchNode batchNodeWithFile:@"pd_sprites.pvr.ccz"];
         [actors.texture setAliasTexParameters];
         [self addChild:actors z:-5];
+        [self initHero];
+        
+        self.touchEnabled = YES;
     }
     return self;
 }
@@ -29,6 +32,19 @@
         [[child texture] setAliasTexParameters];
     }
     [self addChild:tileMap z:-6];
+}
+
+-(void) initHero{
+    
+    hero = [Hero node];
+    [actors addChild:hero];
+    hero.position = ccp(hero.centerToSides, 80);
+    hero.desiredPosition = hero.position;
+    [hero idle];
+}
+
+-(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [hero attack];
 }
 
 @end
