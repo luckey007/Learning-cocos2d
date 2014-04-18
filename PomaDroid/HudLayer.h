@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "SimpleDPad.h"
 
 @interface HudLayer : CCLayer {
     
 }
+@property(nonatomic)SimpleDPad *dPad;
 
 @end

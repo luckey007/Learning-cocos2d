@@ -14,6 +14,8 @@
 -(id) init {
     if (self == [super initWithSpriteFrameName:@"hero_idle_00.png"]) {
         int i;
+        
+        //Load Animation frames of idle Player
         CCArray *idleFrames = [CCArray arrayWithCapacity:6];
         for (i = 0; i < 6; i++) {
             CCSpriteFrame *frame = [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:[NSString stringWithFormat:@"hero_idle_%02d.png",i]];
@@ -22,6 +24,7 @@
         CCAnimation *idleAnimation = [CCAnimation animationWithSpriteFrames:[idleFrames getNSArray] delay:1.0/12.0];
         self.idleAction = [CCRepeatForever actionWithAction:[CCAnimate actionWithAnimation:idleAnimation]];
         
+        //Load Animation frames of attacking Player
         CCArray *attackFrames = [CCArray arrayWithCapacity:3];
         for (i = 0; i < 3; i++) {
             CCSpriteFrame *frame = [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:[NSString stringWithFormat:@"hero_attack_00_%02d.png", i]];
@@ -29,6 +32,15 @@
         }
         CCAnimation *attackAnimation = [CCAnimation animationWithSpriteFrames:[attackFrames getNSArray] delay:1.0/24.0];
         self.attackAction = [CCSequence actions:[CCAnimate actionWithAnimation:attackAnimation], [CCCallFunc actionWithTarget:self selector:@selector(idle)], nil];
+        
+        //Load Animation frames of walking Player
+        CCArray *walkFrames = [CCArray arrayWithCapacity:8];
+        for (i = 0; i < 8; i++) {
+            CCSpriteFrame *frame = [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:[NSString stringWithFormat:@"hero_walk_%02d.png", i]];
+            [walkFrames addObject:frame];
+        }
+        CCAnimation *walkAnimation = [CCAnimation animationWithSpriteFrames:[walkFrames getNSArray] delay:1.0/12.0];
+        self.walkAction = [CCRepeatForever actionWithAction:[CCAnimate actionWithAnimation:walkAnimation]];
         
         self.centerToBottom = 39.0;
         self.centerToSides = 29.0;

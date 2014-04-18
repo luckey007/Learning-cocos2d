@@ -19,6 +19,8 @@
         [self addChild:gameLayer z:0];
         hudLayer = [HudLayer node];
         [self addChild:hudLayer z:1];
+        hudLayer.dPad.delegate = gameLayer;
+        gameLayer.hud = hudLayer;
     }
     return self;
 }

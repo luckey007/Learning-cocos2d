@@ -156,6 +156,7 @@
 		052A4F04190116A4001FFBFA /* pd_tiles.png in Resources */ = {isa = PBXBuildFile; fileRef = 052A4EF9190116A4001FFBFA /* pd_tiles.png */; };
 		052A4F0719011F08001FFBFA /* ActionSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 052A4F0619011F08001FFBFA /* ActionSprite.m */; };
 		052A4F0B19012B31001FFBFA /* Hero.m in Sources */ = {isa = PBXBuildFile; fileRef = 052A4F0A19012B31001FFBFA /* Hero.m */; };
+		052A4F0E19013825001FFBFA /* SimpleDPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 052A4F0D19013825001FFBFA /* SimpleDPad.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -460,6 +461,8 @@
 		052A4F0819012335001FFBFA /* Defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Defines.h; path = ../Defines.h; sourceTree = "<group>"; };
 		052A4F0919012B31001FFBFA /* Hero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hero.h; path = ../Hero.h; sourceTree = "<group>"; };
 		052A4F0A19012B31001FFBFA /* Hero.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Hero.m; path = ../Hero.m; sourceTree = "<group>"; };
+		052A4F0C19013825001FFBFA /* SimpleDPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleDPad.h; path = ../SimpleDPad.h; sourceTree = "<group>"; };
+		052A4F0D19013825001FFBFA /* SimpleDPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleDPad.m; path = ../SimpleDPad.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -532,6 +535,8 @@
 				052A4ED619010DDA001FFBFA /* AppDelegate.h */,
 				052A4ED719010DDA001FFBFA /* AppDelegate.m */,
 				052A4EDC19010DDA001FFBFA /* IntroLayer.h */,
+				052A4F0C19013825001FFBFA /* SimpleDPad.h */,
+				052A4F0D19013825001FFBFA /* SimpleDPad.m */,
 				052A4EDD19010DDA001FFBFA /* IntroLayer.m */,
 				052A4EE719011322001FFBFA /* GameLayer.h */,
 				052A4EE819011322001FFBFA /* GameLayer.m */,
@@ -1066,6 +1071,7 @@
 				052A4E1C19010DD9001FFBFA /* CCTextureAtlas.m in Sources */,
 				052A4ECA19010DDA001FFBFA /* utility.c in Sources */,
 				052A4E7619010DD9001FFBFA /* CCVertex.m in Sources */,
+				052A4F0E19013825001FFBFA /* SimpleDPad.m in Sources */,
 				052A4E7C19010DDA001FFBFA /* NSThread+performBlock.m in Sources */,
 				052A4D8319010DD7001FFBFA /* CCActionTiledGrid.m in Sources */,
 				052A4DCA19010DD8001FFBFA /* CCMenuItem.m in Sources */,

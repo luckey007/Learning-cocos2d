@@ -38,12 +38,23 @@
     
 }
 
--(void)walkWithDirection:(CGPoint)direction{
-    
+-(void)walkWithDirection:(CGPoint)direction {
+        if (_actionState == kActionStateIdle) {
+            [self stopAllActions];
+            [self runAction:_walkAction];
+            _actionState = kActionStateWalk;
+        }
+        if (_actionState == kActionStateWalk) {
+            _velocity = ccp(direction.x * _walkSpeed, direction.y * _walkSpeed);
+            if (_velocity.x >= 0) self.scaleX = 1.0;
+            else self.scaleX = -1.0;
+        }
 }
 
--(void)update:(ccTime)dt{
-    
+-(void)update:(ccTime)dt {
+    if (_actionState == kActionStateWalk) {
+        _desiredPosition = ccpAdd(_position, ccpMult(_velocity, dt));
+    }
 }
 
 @end
