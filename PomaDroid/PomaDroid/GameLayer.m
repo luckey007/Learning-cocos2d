@@ -7,7 +7,7 @@
 //
 
 #import "GameLayer.h"
-
+#import "Robots.h"
 
 @implementation GameLayer
 
@@ -20,6 +20,7 @@
         [actors.texture setAliasTexParameters];
         [self addChild:actors z:-5];
         [self initHero];
+        [self initRobots];
         
         self.touchEnabled = YES;
     }
@@ -44,8 +45,44 @@
     [hero idle];
 }
 
+-(void)initRobots
+{
+    int robotCount = 50;
+    self.robots = [[CCArray alloc] initWithCapacity:robotCount];
+    
+    for (int i = 0; i < robotCount; i++)
+    {
+        Robots *robot = [Robots node];
+        [actors addChild:robot];
+        [_robots addObject:robot];
+        
+        int minX = SCREEN.width + robot.centerToSides;
+        int maxX = tileMap.mapSize.width * tileMap.tileSize.width - robot.centerToSides;
+        int minY = robot.centerToBottom;
+        int maxY = 3 * tileMap.tileSize.height + robot.centerToBottom;
+        robot.scaleX = -1;
+        robot.position = ccp(random_range(minX, maxX), random_range(minY, maxY));
+        robot.desiredPosition = robot.position;
+        [robot idle];
+    }
+}
+
+
+
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [hero attack];
+    if (hero.actionState == kActionStateAttack) {
+        Robots *robot;
+        CCARRAY_FOREACH(_robots, robot) {
+            if (robot.actionState != kActionStateKnockedOut) {
+                if (fabsf(hero.position.y - robot.position.y) < 10) {
+                    if (CGRectIntersectsRect(hero.attackBox.actual, robot.hitBox.actual)) {
+                        [robot hurtWithDamage:hero.damage];
+                    }
+                }
+            }
+        }
+    }
 }
 
 -(void)simpleDPad:(SimpleDPad *)simpleDPad didChangeDirectionTo:(CGPoint)direction {
@@ -69,6 +106,8 @@
 -(void)update:(ccTime)dt {
     [hero update:dt];
     [self updatePositions];
+    [self reorderActors];
+    
     [self setViewpointCenter:hero.position];
 }
 
@@ -94,4 +133,15 @@
     CGPoint viewPoint = ccpSub(centerOfView, actualPosition);
     self.position = viewPoint;
 }
+
+-(void)reorderActors {
+    ActionSprite *sprite;
+    CCARRAY_FOREACH(actors.children, sprite) {
+        [actors reorderChild:sprite z:(tileMap.mapSize.height * tileMap.tileSize.height) - sprite.position.y];
+    }
+}
+
+
+
+
 @end

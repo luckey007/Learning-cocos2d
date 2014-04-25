@@ -20,6 +20,10 @@
 @property(nonatomic,strong)id hurtAction;
 @property(nonatomic,strong)id knockedAction;
 
+#pragma mark collision boxes
+@property(nonatomic,assign)BoundingBox hitBox;
+@property(nonatomic,assign)BoundingBox attackBox;
+
 #pragma mark Character States
 @property(nonatomic,assign)ActionState actionState;
 
@@ -45,6 +49,9 @@
 
 #pragma mark Update Methods
 -(void)update:(ccTime)dt;
+
+#pragma mark collision box factory method
+-(BoundingBox)createBoundingBoxWithOrigin:(CGPoint)origin size:(CGSize)size;
 
 
 

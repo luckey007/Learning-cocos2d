@@ -18,6 +18,7 @@
     CCSpriteBatchNode   *actors;
     Hero                *hero;
 }
-@property(nonatomic)HudLayer *hud;
+@property(nonatomic)HudLayer       *hud;
+@property(nonatomic,strong)CCArray *robots;
 
 @end

@@ -30,12 +30,24 @@
     }
 }
 
--(void)hurtWithDamage:(float)damage{
-    
+-(void)hurtWithDamage:(float)damage {
+    if (_actionState != kActionStateKnockedOut) {
+        [self stopAllActions];
+        [self runAction:_hurtAction];
+        _actionState = kActionStateHurt;
+        _hitPoints -= damage;
+        
+        if (_hitPoints <= 0.0) {
+            [self knockout];
+        }
+    }
 }
 
--(void)knockout{
-    
+-(void)knockout {
+    [self stopAllActions];
+    [self runAction:_knockedAction];
+    _hitPoints = 0.0;
+    _actionState = kActionStateKnockedOut;
 }
 
 -(void)walkWithDirection:(CGPoint)direction {
@@ -55,6 +67,30 @@
     if (_actionState == kActionStateWalk) {
         _desiredPosition = ccpAdd(_position, ccpMult(_velocity, dt));
     }
+}
+
+-(BoundingBox)createBoundingBoxWithOrigin:(CGPoint)origin size:(CGSize)size
+{
+    BoundingBox boundingBox;
+    boundingBox.original.origin = origin;
+    boundingBox.original.size = size;
+    boundingBox.actual.origin = ccpAdd(_position, ccp(boundingBox.original.origin.x, boundingBox.original.origin.y));
+    boundingBox.actual.size = size;
+    return boundingBox;
+}
+
+-(void)transformBoxes
+{
+    _hitBox.actual.origin = ccpAdd(_position, ccp(_hitBox.original.origin.x * _scaleX, _hitBox.original.origin.y * _scaleY));
+    _hitBox.actual.size = CGSizeMake(_hitBox.original.size.width * _scaleX, _hitBox.original.size.height * _scaleY);
+    _attackBox.actual.origin = ccpAdd(_position, ccp(_attackBox.original.origin.x * _scaleX, _attackBox.original.origin.y * _scaleY));
+    _attackBox.actual.size = CGSizeMake(_attackBox.original.size.width * _scaleX, _attackBox.original.size.height * _scaleY);
+}
+
+-(void)setPosition:(CGPoint)position
+{
+    [super setPosition:position];
+    [self transformBoxes];
 }
 
 @end

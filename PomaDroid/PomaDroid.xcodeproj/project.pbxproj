@@ -157,6 +157,7 @@
 		052A4F0719011F08001FFBFA /* ActionSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 052A4F0619011F08001FFBFA /* ActionSprite.m */; };
 		052A4F0B19012B31001FFBFA /* Hero.m in Sources */ = {isa = PBXBuildFile; fileRef = 052A4F0A19012B31001FFBFA /* Hero.m */; };
 		052A4F0E19013825001FFBFA /* SimpleDPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 052A4F0D19013825001FFBFA /* SimpleDPad.m */; };
+		05CED9D41904F1E400F5B060 /* Robots.m in Sources */ = {isa = PBXBuildFile; fileRef = 05CED9D31904F1E400F5B060 /* Robots.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -463,6 +464,8 @@
 		052A4F0A19012B31001FFBFA /* Hero.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Hero.m; path = ../Hero.m; sourceTree = "<group>"; };
 		052A4F0C19013825001FFBFA /* SimpleDPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleDPad.h; path = ../SimpleDPad.h; sourceTree = "<group>"; };
 		052A4F0D19013825001FFBFA /* SimpleDPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleDPad.m; path = ../SimpleDPad.m; sourceTree = "<group>"; };
+		05CED9D21904F1E400F5B060 /* Robots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Robots.h; path = ../Robots.h; sourceTree = "<group>"; };
+		05CED9D31904F1E400F5B060 /* Robots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Robots.m; path = ../Robots.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -523,6 +526,8 @@
 		052A4D4519010DD6001FFBFA /* PomaDroid */ = {
 			isa = PBXGroup;
 			children = (
+				05CED9D21904F1E400F5B060 /* Robots.h */,
+				05CED9D31904F1E400F5B060 /* Robots.m */,
 				052A4F0919012B31001FFBFA /* Hero.h */,
 				052A4F0A19012B31001FFBFA /* Hero.m */,
 				052A4F0819012335001FFBFA /* Defines.h */,
@@ -1039,6 +1044,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05CED9D41904F1E400F5B060 /* Robots.m in Sources */,
 				052A4E2219010DD9001FFBFA /* CCTexturePVR.m in Sources */,
 				052A4E7219010DD9001FFBFA /* ccUtils.c in Sources */,
 				052A4DC319010DD8001FFBFA /* CCLayer.m in Sources */,
@@ -1263,6 +1269,7 @@
 				052A4EE319010DDA001FFBFA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

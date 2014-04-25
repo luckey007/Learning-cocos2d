@@ -13,7 +13,7 @@
 #define CENTER ccp(SCREEN.width / 2, SCREEN.height / 2)
 #define CURTIME CACurrentMediaTime()
 
-#define ramdom_range(low,high) (arc4random()%(high-low+1))+low
+#define random_range(low,high) (arc4random()%(high-low+1))+low
 #define frandom (float)arcrandom()/UINT64_C(0x100000000)
 #define frandom_range(low,high) ((high-low)*frandom)+low
 
