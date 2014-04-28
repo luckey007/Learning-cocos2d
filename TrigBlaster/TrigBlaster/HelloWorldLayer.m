@@ -25,10 +25,10 @@ const float MaxPlayerSpeed = 200.0f;
     CCSprite  *playerSprite;
     UIAccelerationValue accelerometerX;
     UIAccelerationValue accelerometerY;
-    float _playerAccelX;
-    float _playerAccelY;
-    float _playerSpeedX;
-    float _playerSpeedY;
+    float playerAccelX;
+    float playerAccelY;
+    float playerSpeedX;
+    float playerSpeedY;
     
 }
 
@@ -49,6 +49,7 @@ const float MaxPlayerSpeed = 200.0f;
 	if( (self=[super initWithColor:ccc4(94, 63, 107, 255)]) ) {
         
         self.accelerometerEnabled = YES;
+         [self scheduleUpdate];
         
         winsize = [CCDirector sharedDirector].winSize;
         
@@ -71,6 +72,51 @@ const float MaxPlayerSpeed = 200.0f;
     const double FilteringFactor = 0.75;
     
     accelerometerX = acceleration.x * FilteringFactor + accelerometerX * (1.0 - FilteringFactor);
-    accelerometerY = acceleration.y * FilteringFactor + accelerometerY * (1.0 - FilteringFactor);}
+    accelerometerY = acceleration.y * FilteringFactor + accelerometerY * (1.0 - FilteringFactor);
+
+    if (accelerometerY > 0.05)
+    {
+        playerAccelX = -MaxPlayerAccel;
+    }
+    else if (accelerometerY < -0.05)
+    {
+        playerAccelX = MaxPlayerAccel;
+    }
+    if (accelerometerX < -0.05)
+    {
+        playerAccelY = -MaxPlayerAccel;
+    }
+    else if (accelerometerX > 0.05)
+    {
+        playerAccelY = MaxPlayerAccel;
+    }
+    
+}
+
+- (void)updatePlayer:(ccTime)dt
+{
+    // 1
+    playerSpeedX += playerAccelX * dt;
+    playerSpeedY += playerAccelY * dt;
+    
+    // 2
+    playerSpeedX = fmaxf(fminf(playerSpeedX, MaxPlayerSpeed), -MaxPlayerSpeed);
+    playerSpeedY = fmaxf(fminf(playerSpeedY, MaxPlayerSpeed), -MaxPlayerSpeed);
+    
+    // 3
+    float newX = playerSprite.position.x + playerSpeedX*dt;
+    float newY = playerSprite.position.y + playerSpeedY*dt;
+    
+    // 4
+    newX = MIN(winsize.width, MAX(newX, 0));
+    newY = MIN(winsize.height, MAX(newY, 0));
+    
+    playerSprite.position = ccp(newX, newY);
+}
+
+- (void)update:(ccTime)dt
+{
+    [self updatePlayer:dt];
+}
 
 @end
