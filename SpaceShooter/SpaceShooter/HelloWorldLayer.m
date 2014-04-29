@@ -6,9 +6,17 @@
 //  Copyright Lucky Lakhwani 2014. All rights reserved.
 //
 
+#define kFilteringFactor 0.1
+#define kRestAccelX -0.6
+#define kShipMaxPointsPerSec  0.5
+#define kMaxDiffX 0.2
+#define kNumAsteroids   15
+#define kNumLasers      5
+#define KRestAccelY -0.2
 
 // Import the interfaces
 #import "HelloWorldLayer.h"
+#import "CCParallaxNode-Extras.h"
 
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
@@ -68,6 +76,32 @@
         [backgroundNode addChild:spacialanomaly z:-1 parallaxRatio:bgSpeed positionOffset:ccp(900,winSize.height * 0.3)];
         [backgroundNode addChild:spacialanomaly2 z:-1 parallaxRatio:bgSpeed positionOffset:ccp(1500,winSize.height * 0.9)];
         
+        NSArray *starsArray = [NSArray arrayWithObjects:@"Stars1.plist", @"Stars2.plist", @"Stars3.plist", nil];
+        for(NSString *stars in starsArray) {
+            CCParticleSystemQuad *starsEffect = [CCParticleSystemQuad particleWithFile:stars];
+            [self addChild:starsEffect z:1];
+        }
+        
+        
+        _asteroids = [[CCArray alloc] initWithCapacity:kNumAsteroids];
+        for(int i = 0; i < kNumAsteroids; ++i) {
+            CCSprite *asteroid = [CCSprite spriteWithSpriteFrameName:@"asteroid.png"];
+            asteroid.visible = NO;
+            [batchNode addChild:asteroid];
+            [_asteroids addObject:asteroid];
+        }
+        
+        _shipLasers = [[CCArray alloc] initWithCapacity:kNumLasers];
+        for(int i = 0; i < kNumLasers; ++i) {
+            CCSprite *shipLaser = [CCSprite spriteWithSpriteFrameName:@"laserbeam_blue.png"];
+            shipLaser.visible = NO;
+            [batchNode addChild:shipLaser];
+            [_shipLasers addObject:shipLaser];
+        }
+        
+        self.touchEnabled = YES;
+        self.accelerometerEnabled = YES;
+
         [self scheduleUpdate];
     }
     return self;
@@ -83,11 +117,135 @@
 	[super dealloc];
 }
 
+- (float)randomValueBetween:(float)low andValue:(float)high {
+    return (((float) arc4random() / 0xFFFFFFFFu) * (high - low)) + low;
+}
+
 - (void)update:(ccTime)dt {
     
     CGPoint backgroundScrollVel = ccp(-1000, 0);
     backgroundNode.position = ccpAdd(backgroundNode.position, ccpMult(backgroundScrollVel, dt));
     
+    NSArray *spaceDusts = [NSArray arrayWithObjects:spacedust1, spacedust2, nil];
+    for (CCSprite *spaceDust in spaceDusts) {
+        if ([backgroundNode convertToWorldSpace:spaceDust.position].x < -spaceDust.contentSize.width) {
+            [backgroundNode incrementOffset:ccp(2*spaceDust.contentSize.width,0) forChild:spaceDust];
+        }
+    }
+    
+    NSArray *backgrounds = [NSArray arrayWithObjects:planetsunrise, galaxy, spacialanomaly, spacialanomaly2, nil];
+    for (CCSprite *background in backgrounds) {
+        if ([backgroundNode convertToWorldSpace:background.position].x < -background.contentSize.width) {
+            [backgroundNode incrementOffset:ccp(2000,0) forChild:background];
+        }
+    }
+    
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    float maxY = winSize.height - ship.contentSize.height/2;
+    float minY = ship.contentSize.height/2;
+    
+    float newX = ship.position.x + (shipPointsPerSecY * dt);
+    newX = MIN(maxY, MAX(newX, minY));
+
+    
+    float newY = ship.position.y + (shipPointsPerSec * dt);
+    newY = MIN(MAX(newY, minY), maxY);
+    ship.position = ccp(newX, newY);
+
+    double curTime = CACurrentMediaTime();
+    if (curTime > _nextAsteroidSpawn) {
+        
+        float randSecs = [self randomValueBetween:0.20 andValue:1.0];
+        _nextAsteroidSpawn = randSecs + curTime;
+        
+        float randY = [self randomValueBetween:0.0 andValue:winSize.height];
+        float randDuration = [self randomValueBetween:2.0 andValue:10.0];
+        
+        CCSprite *asteroid = [_asteroids objectAtIndex:_nextAsteroid];
+        _nextAsteroid++;
+        if (_nextAsteroid >= _asteroids.count) _nextAsteroid = 0;
+        
+        [asteroid stopAllActions];
+        asteroid.position = ccp(winSize.width+asteroid.contentSize.width/2, randY);
+        asteroid.visible = YES;
+        [asteroid runAction:[CCSequence actions:
+                             [CCMoveBy actionWithDuration:randDuration position:ccp(-winSize.width-asteroid.contentSize.width, 0)],
+                             [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible:)],
+                             nil]];
+        
+    }
+    
+    for (CCSprite *asteroid in _asteroids) {
+        if (!asteroid.visible) continue;
+        
+        for (CCSprite *shipLaser in _shipLasers) {
+            if (!shipLaser.visible) continue;
+            
+            if (CGRectIntersectsRect(shipLaser.boundingBox, asteroid.boundingBox)) {
+                shipLaser.visible = NO;
+                asteroid.visible = NO;
+                continue;
+            }
+        }
+        
+        if (CGRectIntersectsRect(ship.boundingBox, asteroid.boundingBox)) {
+            asteroid.visible = NO;
+            [ship runAction:[CCBlink actionWithDuration:1.0 blinks:4]];
+        }
+    
+    }
+    
 }
 
+
+-(void) accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration{
+
+    
+    UIAccelerationValue rollingX, rollingY, rollingZ;
+    
+    rollingX = (acceleration.x * kFilteringFactor) + (rollingX * (1.0 - kFilteringFactor));
+    rollingY = (acceleration.y * kFilteringFactor) + (rollingY * (1.0 - kFilteringFactor));
+    rollingZ = (acceleration.z * kFilteringFactor) + (rollingZ * (1.0 - kFilteringFactor));
+    
+    float acelX = acceleration.x - rollingX;
+    float acelY = acceleration.y - rollingY;
+    float acelZ = acceleration.z - rollingZ;
+    
+    CGSize winsize = [CCDirector sharedDirector].winSize;
+    
+    float acceldiff = acelX - kRestAccelX;
+    float accelFraction = acceldiff / kMaxDiffX;
+    float pointsPerSec = kShipMaxPointsPerSec * winsize.height * accelFraction;
+    
+    float acceldiffY = acelY - KRestAccelY;
+    float accelFractionY = acceldiffY / kMaxDiffX;
+    float pointsPerSecY = kShipMaxPointsPerSec * winsize.width * accelFractionY;
+    
+    shipPointsPerSecY = pointsPerSec;
+    shipPointsPerSec = pointsPerSecY;
+}
+
+- (void)setInvisible:(CCNode *)node {
+    node.visible = NO;
+}
+
+
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+    CCSprite *shipLaser = [_shipLasers objectAtIndex:_nextShipLaser];
+    _nextShipLaser++;
+    if (_nextShipLaser >= _shipLasers.count)
+        _nextShipLaser = 0;
+    
+    shipLaser.position = ccpAdd(ship.position, ccp(shipLaser.contentSize.width/2, 0));
+    shipLaser.visible = YES;
+    [shipLaser stopAllActions];
+    [shipLaser runAction:[CCSequence actions:
+                          [CCMoveBy actionWithDuration:0.5 position:ccp(winSize.width, 0)],
+                          [CCCallFuncN actionWithTarget:self selector:@selector(setInvisible:)],
+                          nil]];
+    
+}
 @end

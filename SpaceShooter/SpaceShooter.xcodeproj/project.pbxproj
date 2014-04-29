@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		055AEDBE190FAACA00B7DBB7 /* CCParallaxNode-Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 055AEDBD190FAACA00B7DBB7 /* CCParallaxNode-Extras.m */; };
+		055AEDC0190FB1AB00B7DBB7 /* libisimulate-4.x.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 055AEDBF190FB1AB00B7DBB7 /* libisimulate-4.x.a */; };
+		055AEDC2190FB29B00B7DBB7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 055AEDC1190FB29B00B7DBB7 /* CoreLocation.framework */; };
 		058E4BD9190E8CFD00AC1442 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 058E4BD8190E8CFD00AC1442 /* QuartzCore.framework */; };
 		058E4BDB190E8CFD00AC1442 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 058E4BDA190E8CFD00AC1442 /* OpenGLES.framework */; };
 		058E4BDD190E8CFD00AC1442 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 058E4BDC190E8CFD00AC1442 /* OpenAL.framework */; };
@@ -154,6 +157,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		055AEDBC190FAACA00B7DBB7 /* CCParallaxNode-Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCParallaxNode-Extras.h"; sourceTree = "<group>"; };
+		055AEDBD190FAACA00B7DBB7 /* CCParallaxNode-Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCParallaxNode-Extras.m"; sourceTree = "<group>"; };
+		055AEDBF190FB1AB00B7DBB7 /* libisimulate-4.x.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libisimulate-4.x.a"; path = "../../../Downloads/libisimulate-4.x-1.5-20100925/libisimulate-4.x.a"; sourceTree = "<group>"; };
+		055AEDC1190FB29B00B7DBB7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		058E4BD5190E8CFD00AC1442 /* SpaceShooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceShooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		058E4BD8190E8CFD00AC1442 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		058E4BDA190E8CFD00AC1442 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -452,6 +459,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				055AEDC2190FB29B00B7DBB7 /* CoreLocation.framework in Frameworks */,
+				055AEDC0190FB1AB00B7DBB7 /* libisimulate-4.x.a in Frameworks */,
 				058E4BDD190E8CFD00AC1442 /* OpenAL.framework in Frameworks */,
 				058E4BE3190E8CFD00AC1442 /* UIKit.framework in Frameworks */,
 				058E4BD9190E8CFD00AC1442 /* QuartzCore.framework in Frameworks */,
@@ -468,6 +477,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		055AEDBB190FAACA00B7DBB7 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				055AEDBC190FAACA00B7DBB7 /* CCParallaxNode-Extras.h */,
+				055AEDBD190FAACA00B7DBB7 /* CCParallaxNode-Extras.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		058E4BCC190E8CFD00AC1442 = {
 			isa = PBXGroup;
 			children = (
@@ -488,6 +506,8 @@
 		058E4BD7190E8CFD00AC1442 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				055AEDC1190FB29B00B7DBB7 /* CoreLocation.framework */,
+				055AEDBF190FB1AB00B7DBB7 /* libisimulate-4.x.a */,
 				058E4BD8190E8CFD00AC1442 /* QuartzCore.framework */,
 				058E4BDA190E8CFD00AC1442 /* OpenGLES.framework */,
 				058E4BDC190E8CFD00AC1442 /* OpenAL.framework */,
@@ -505,6 +525,7 @@
 		058E4BEC190E8CFD00AC1442 /* SpaceShooter */ = {
 			isa = PBXGroup;
 			children = (
+				055AEDBB190FAACA00B7DBB7 /* Classes */,
 				058E4D7D190E8D0100AC1442 /* AppDelegate.h */,
 				058E4D7E190E8D0100AC1442 /* AppDelegate.m */,
 				058E4D80190E8D0100AC1442 /* HelloWorldLayer.h */,
@@ -1030,6 +1051,7 @@
 				058E4C52190E8CFE00AC1442 /* ccFPSImages.m in Sources */,
 				058E4CD8190E8D0000AC1442 /* CCTMXXMLParser.m in Sources */,
 				058E4D6F190E8D0100AC1442 /* ray2.c in Sources */,
+				055AEDBE190FAACA00B7DBB7 /* CCParallaxNode-Extras.m in Sources */,
 				058E4D0A190E8D0000AC1442 /* base64.c in Sources */,
 				058E4C2D190E8CFE00AC1442 /* CCActionTween.m in Sources */,
 				058E4C64190E8CFF00AC1442 /* CCLabelBMFont.m in Sources */,
@@ -1150,6 +1172,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1169,6 +1192,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1184,6 +1208,10 @@
 				GCC_PREFIX_HEADER = SpaceShooter/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"SpaceShooter/libs/kazmath/include\"";
 				INFOPLIST_FILE = SpaceShooter/Resources/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/lucky/Downloads/libisimulate-4.x-1.5-20100925",
+				);
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lsqlite3",
@@ -1203,6 +1231,10 @@
 				GCC_PREFIX_HEADER = SpaceShooter/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"SpaceShooter/libs/kazmath/include\"";
 				INFOPLIST_FILE = SpaceShooter/Resources/Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/lucky/Downloads/libisimulate-4.x-1.5-20100925",
+				);
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lsqlite3",
@@ -1233,6 +1265,7 @@
 				058E4D8A190E8D0100AC1442 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

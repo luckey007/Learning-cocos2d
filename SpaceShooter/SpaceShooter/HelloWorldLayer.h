@@ -9,6 +9,8 @@
 
 #import <GameKit/GameKit.h>
 
+
+
 // When you import this file, you import all the cocos2d classes
 #import "cocos2d.h"
 
@@ -24,6 +26,15 @@
     CCSprite *galaxy;
     CCSprite *spacialanomaly;
     CCSprite *spacialanomaly2;
+    float shipPointsPerSecY;
+    float shipPointsPerSec;
+    
+    CCArray *_asteroids;
+    int _nextAsteroid;
+    double _nextAsteroidSpawn;
+    
+    CCArray *_shipLasers;
+    int _nextShipLaser;
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child
