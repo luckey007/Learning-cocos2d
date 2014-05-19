@@ -58,7 +58,6 @@ int comparator(const void *a, const void *b) {
         // enable events
         self.touchEnabled = YES;
         self.accelerometerEnabled = YES;
-        CGSize s = [CCDirector sharedDirector].winSize;
         
         // init physics
         [self initPhysics];
@@ -85,8 +84,6 @@ int comparator(const void *a, const void *b) {
         _nextTossTime = CACurrentMediaTime() + 1;
         _queuedForToss = 0;
         [self scheduleUpdate];
-        
-        
     }
     return self;
 }
@@ -101,9 +98,6 @@ int comparator(const void *a, const void *b) {
 
 -(void) initPhysics
 {
-	
-	CGSize s = [[CCDirector sharedDirector] winSize];
-	
 	b2Vec2 gravity;
     gravity.Set(0.0f, -4.25f);
 	world = new b2World(gravity);
